@@ -5,10 +5,14 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.activity_login.idEdt
+import kotlinx.android.synthetic.main.activity_login.pwEdt
+import kotlinx.android.synthetic.main.activity_login.signUpBtn
+import kotlinx.android.synthetic.main.activity_sign_up.*
 import kun.hee.api_practice_login.utils.ServerUtil
 import org.json.JSONObject
 
-class LoninActivity : BaseActivity() {
+class LoginActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,6 +22,13 @@ class LoninActivity : BaseActivity() {
     }
 
     override fun setupEvents() {
+        signUpBtn.setOnClickListener {
+            val myIntent = Intent(mContext, SignUpActivity::class.java)
+            startActivity(myIntent)
+        }
+
+
+
 
         loginBtn.setOnClickListener {
             val inputId = idEdt.text.toString() //아이디가 존재하지 않는다면 ?

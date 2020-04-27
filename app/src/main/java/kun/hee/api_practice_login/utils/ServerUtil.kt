@@ -28,6 +28,7 @@ class ServerUtil {
             val urlStr = "${BASE_URL}/auth"
 
 //    서버에 들고갈 데이터를 첨부. =>POST메쏘드의 예제
+//    formData로 담아달라고 했자낭
             val formBody = FormBody.Builder() //캐리어 열자 -> add로 짐넣자
                 .add("login_id", id) //짐넣기 login_id는 저 주소에서 받는 이름.
                 .add("password", pw) //저 링크에서 받겠다는 이름이 password
@@ -65,6 +66,48 @@ class ServerUtil {
             })
 
         }
+
+
+
+
+        fun putRequestSignUp(context: Context, id:String, pw:String, name:String, phoneNum:String, handler: JsonResponseHandler?){
+            val client = OkHttpClient()
+            val urlStr = "${BASE_URL}/auth"
+
+            val formBody = FormBody.Builder() //formData로 담아달라고 했자낭
+                .add("login_id", id)
+                .add("password", pw)
+                .add("name", name)
+                .add("phone", phoneNum)
+                .build()
+
+            val request = Request.Builder()
+                .url(urlStr)
+                .put(formBody)
+                .build()
+
+            client.newCall(request).enqueue(object : Callback{ // {}를 해야 object alt+enter됨
+                override fun onFailure(call: Call, e: IOException) {
+
+                    e.printStackTrace()
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    val body = response.body!!.string()
+                    val json = JSONObject(body)
+
+                    handler?.onResponse(json)
+                }
+
+            })
+
+
+        }
+
+
+
+
+
 
     }
 }
