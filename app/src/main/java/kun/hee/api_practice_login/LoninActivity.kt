@@ -1,6 +1,8 @@
 package kun.hee.api_practice_login
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_login.*
 import kun.hee.api_practice_login.utils.ServerUtil
@@ -23,11 +25,18 @@ class LoninActivity : BaseActivity() {
 //        서버로 로그인 요청 => ServerUtil클래스 기능 활용
             ServerUtil.postRequestLogin(mContext, inputId, inputPw, object:ServerUtil.JsonResponseHandler{//인터페이스 달라고하면 object:ㅇ라ㅣㅏㅓ리멀
                 override fun onResponse(json: JSONObject) {// 실제로 응답을 받은 것을 분석, 대응하는 코드를 여기다 적으래.
-//                Log.d("서버응답JSON",json.toString()) // 임시로 서버 응답 확인하기 위한 코드
+                Log.d("서버응답JSON",json.toString()) // 임시로 서버 응답 확인하기 위한 코드
 
                 val code = json.getInt("code")
                 if (code == 200){ // 로그인 성공
+                    val data = json.getJSONObject("data") // 중괄호 전부
+                    val user = data.getJSONObject("user")
+                    val name = user.getString("name")
 
+
+                    val myIntent = Intent(mContext, MainActivity::class.java)
+                    myIntent.putExtra("userName", name) // "userName"이거 Main에서 틀리면 앱 죽는다!!★
+                    startActivity(myIntent)
                 }
                 else {
                     val message = json.getString("message")
